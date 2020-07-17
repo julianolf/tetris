@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "py-tetris"
+version = "0.1.0"
+description = "Yet another tetris game written in Python"
+authors = ["Juliano Fernandes <julianofernandes@gmail.com>"]
+license = "MIT"
+readme = "README.rst"
+repository = "https://github.com/julianolf/py-tetris"
+keywords = ["tetris", "game", "pygame"]
+classifiers = [
+    "Topic :: Games/Entertainment",
+    "Topic :: Software Development :: Libraries :: pygame"
+]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+pygame = "2.0.0.dev10"
+
+[tool.poetry.dev-dependencies]
+black = {version = "*", allow-prereleases = true}
+flake8 = "*"
+isort = "*"
+
+[tool.poetry.scripts]
+pytetris = "py_tetris.game:main"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
