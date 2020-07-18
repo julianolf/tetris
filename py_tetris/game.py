@@ -13,7 +13,7 @@ class Game:
 
     def reset(self):
         self.sprites.empty()
-        self.block = sprites.Block(settings.WHITE, (0, 0), (self.sprites,))
+        self.current = sprites.S(pygame.Vector2(0, 0), (self.sprites,))
         self.running = True
 
     def update(self):
@@ -29,6 +29,19 @@ class Game:
             if event.type == pygame.QUIT:
                 self.running = False
                 return
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    self.current.left()
+                    return
+                if event.key == pygame.K_RIGHT:
+                    self.current.right()
+                    return
+                if event.key == pygame.K_DOWN:
+                    self.current.down()
+                    return
+                if event.key == pygame.K_UP:
+                    self.current.rotate()
+                    return
 
     def loop(self):
         while self.running:
