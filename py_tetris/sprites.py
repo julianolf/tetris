@@ -16,13 +16,16 @@ class Piece(pygame.sprite.Sprite):
         self.draw()
 
     def left(self):
-        self.position.x -= settings.BLOCK
+        if self.rect.left > 0:
+            self.position.x -= settings.BLOCK
 
     def right(self):
-        self.position.x += settings.BLOCK
+        if self.rect.right < settings.WIDTH:
+            self.position.x += settings.BLOCK
 
     def down(self):
-        self.position.y += settings.BLOCK
+        if self.rect.bottom < settings.HEIGHT:
+            self.position.y += settings.BLOCK
 
     def rotate(self):
         self.rotation += 1
@@ -39,6 +42,12 @@ class Piece(pygame.sprite.Sprite):
         if elapsed_time > 1500:
             self.last_move = now
             self.position.y += self.gravity
+        if self.rect.left < 0:
+            self.position.x = 0
+        if self.rect.right > settings.WIDTH:
+            self.position.x = settings.WIDTH - self.rect.width
+        if self.rect.bottom > settings.HEIGHT:
+            settings.position.y = settings.HEIGHT - self.rect.height
         self.draw()
 
     def draw(self):
