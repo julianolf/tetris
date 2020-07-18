@@ -13,7 +13,7 @@ class Game:
 
     def reset(self):
         self.sprites.empty()
-        self.current = sprites.S(pygame.Vector2(0, 0), (self.sprites,))
+        self.current = sprites.T_(pygame.Vector2(0, 0), (self.sprites,))
         self.running = True
 
     def update(self):

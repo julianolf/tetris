@@ -49,8 +49,65 @@ class Piece(pygame.sprite.Sprite):
         self.rect.topleft = self.position
 
 
-class S(Piece):
+class S_(Piece):
     def __init__(self, position, *args, **kwargs):
         shapes = (((0, 1, 1), (1, 1, 0)), ((1, 0), (1, 1), (0, 1)))
         color = (0, 255, 0)
+        super().__init__(shapes, color, position, *args, **kwargs)
+
+
+class Z_(Piece):
+    def __init__(self, position, *args, **kwargs):
+        shapes = (((1, 1, 0), (0, 1, 1)), ((0, 1), (1, 1), (1, 0)))
+        color = (255, 0, 0)
+        super().__init__(shapes, color, position, *args, **kwargs)
+
+
+class I_(Piece):
+    def __init__(self, position, *args, **kwargs):
+        shapes = (((1, 1, 1, 1),), ((1,), (1,), (1,), (1,)))
+        color = (0, 255, 255)
+        super().__init__(shapes, color, position, *args, **kwargs)
+
+
+class O_(Piece):
+    def __init__(self, position, *args, **kwargs):
+        shapes = (((1, 1), (1, 1)),)
+        color = (255, 255, 0)
+        super().__init__(shapes, color, position, *args, **kwargs)
+
+
+class J_(Piece):
+    def __init__(self, position, *args, **kwargs):
+        shapes = (
+            ((1, 0, 0), (1, 1, 1)),
+            ((1, 1), (1, 0), (1, 0)),
+            ((1, 1, 1), (0, 0, 1)),
+            ((0, 1), (0, 1), (1, 1)),
+        )
+        color = (0, 0, 255)
+        super().__init__(shapes, color, position, *args, **kwargs)
+
+
+class L_(Piece):
+    def __init__(self, position, *args, **kwargs):
+        shapes = (
+            ((0, 0, 1), (1, 1, 1)),
+            ((1, 0), (1, 0), (1, 1)),
+            ((1, 1, 1), (1, 0, 0)),
+            ((1, 1), (0, 1), (0, 1)),
+        )
+        color = (255, 165, 0)
+        super().__init__(shapes, color, position, *args, **kwargs)
+
+
+class T_(Piece):
+    def __init__(self, position, *args, **kwargs):
+        shapes = (
+            ((0, 1, 0), (1, 1, 1)),
+            ((1, 0), (1, 1), (1, 0)),
+            ((1, 1, 1), (0, 1, 0)),
+            ((0, 1), (1, 1), (0, 1)),
+        )
+        color = (128, 0, 128)
         super().__init__(shapes, color, position, *args, **kwargs)
