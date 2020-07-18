@@ -52,29 +52,25 @@ class Piece(pygame.sprite.Sprite):
 class S_(Piece):
     def __init__(self, position, *args, **kwargs):
         shapes = (((0, 1, 1), (1, 1, 0)), ((1, 0), (1, 1), (0, 1)))
-        color = (0, 255, 0)
-        super().__init__(shapes, color, position, *args, **kwargs)
+        super().__init__(shapes, settings.GREEN, position, *args, **kwargs)
 
 
 class Z_(Piece):
     def __init__(self, position, *args, **kwargs):
         shapes = (((1, 1, 0), (0, 1, 1)), ((0, 1), (1, 1), (1, 0)))
-        color = (255, 0, 0)
-        super().__init__(shapes, color, position, *args, **kwargs)
+        super().__init__(shapes, settings.RED, position, *args, **kwargs)
 
 
 class I_(Piece):
     def __init__(self, position, *args, **kwargs):
         shapes = (((1, 1, 1, 1),), ((1,), (1,), (1,), (1,)))
-        color = (0, 255, 255)
-        super().__init__(shapes, color, position, *args, **kwargs)
+        super().__init__(shapes, settings.CYAN, position, *args, **kwargs)
 
 
 class O_(Piece):
     def __init__(self, position, *args, **kwargs):
         shapes = (((1, 1), (1, 1)),)
-        color = (255, 255, 0)
-        super().__init__(shapes, color, position, *args, **kwargs)
+        super().__init__(shapes, settings.YELLOW, position, *args, **kwargs)
 
 
 class J_(Piece):
@@ -85,8 +81,7 @@ class J_(Piece):
             ((1, 1, 1), (0, 0, 1)),
             ((0, 1), (0, 1), (1, 1)),
         )
-        color = (0, 0, 255)
-        super().__init__(shapes, color, position, *args, **kwargs)
+        super().__init__(shapes, settings.BLUE, position, *args, **kwargs)
 
 
 class L_(Piece):
@@ -97,8 +92,7 @@ class L_(Piece):
             ((1, 1, 1), (1, 0, 0)),
             ((1, 1), (0, 1), (0, 1)),
         )
-        color = (255, 165, 0)
-        super().__init__(shapes, color, position, *args, **kwargs)
+        super().__init__(shapes, settings.ORANGE, position, *args, **kwargs)
 
 
 class T_(Piece):
@@ -109,5 +103,4 @@ class T_(Piece):
             ((1, 1, 1), (0, 1, 0)),
             ((0, 1), (1, 1), (0, 1)),
         )
-        color = (128, 0, 128)
-        super().__init__(shapes, color, position, *args, **kwargs)
+        super().__init__(shapes, settings.PURPLE, position, *args, **kwargs)
