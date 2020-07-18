@@ -40,8 +40,8 @@ class Piece(pygame.sprite.Sprite):
         for x in range(rows):
             for y in range(cols):
                 if shape[x][y]:
-                    coord = (y * settings.BLOCK, x * settings.BLOCK)
-                    block = (settings.BLOCK, settings.BLOCK)
+                    coord = (y * settings.BLOCK + 1, x * settings.BLOCK + 1)
+                    block = (settings.BLOCK - 2, settings.BLOCK - 2)
                     rect = pygame.Rect(coord, block)
                     pygame.draw.rect(image, self.color, rect)
         self.image = image.convert()
