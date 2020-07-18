@@ -1,3 +1,5 @@
+import random
+
 import pygame
 
 from . import settings, sprites
@@ -10,10 +12,31 @@ class Game:
         self.screen = pygame.display.set_mode(settings.WIN_SIZE)
         self.clock = pygame.time.Clock()
         self.sprites = pygame.sprite.Group()
+        self.pieces = (
+            sprites.S_,
+            sprites.Z_,
+            sprites.I_,
+            sprites.O_,
+            sprites.J_,
+            sprites.L_,
+            sprites.T_,
+        )
+
+    def new_piece(self):
+        piece = random.choice(self.pieces)
+        x = settings.BLOCK * 4
+        y = settings.BLOCK * -2
+        return piece(pygame.Vector2(x, y), self, (self.sprites,))
+
+    def launch_piece(self):
+        self.current = self.next
+        self.current.gravity = settings.BLOCK
+        self.next = self.new_piece()
 
     def reset(self):
         self.sprites.empty()
-        self.current = sprites.T_(pygame.Vector2(0, 0), (self.sprites,))
+        self.next = self.new_piece()
+        self.launch_piece()
         self.running = True
 
     def update(self):

@@ -4,13 +4,16 @@ from . import settings
 
 
 class Piece(pygame.sprite.Sprite):
-    def __init__(self, shapes, color, position, *args, **kwargs):
+    def __init__(self, shapes, color, position, game, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.shapes = shapes
         self.color = color
         self.position = position
+        self.game = game
         self.rotation = 0
         self.last_move = 0
+        self.gravity = 0
+        self.draw()
 
     def left(self):
         self.position.x -= settings.BLOCK
@@ -25,11 +28,20 @@ class Piece(pygame.sprite.Sprite):
         self.rotation += 1
 
     def update(self):
+        if not self.gravity:
+            return
+        if self.rect.bottom == settings.HEIGHT and self.gravity:
+            self.gravity = 0
+            self.game.launch_piece()
+            return
         now = pygame.time.get_ticks()
         elapsed_time = now - self.last_move
         if elapsed_time > 1500:
             self.last_move = now
-            self.position.y += settings.BLOCK
+            self.position.y += self.gravity
+        self.draw()
+
+    def draw(self):
         shape = self.shapes[self.rotation % len(self.shapes)]
         rows = len(shape)
         cols = len(shape[0])
