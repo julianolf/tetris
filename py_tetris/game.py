@@ -33,8 +33,19 @@ class Game:
         self.current.gravity = settings.BLOCK
         self.next = self.new_piece()
 
+    def stack(self):
+        for block in self.current.blocks:
+            block.add((self.sprites,))
+            xy = tuple(block.position)
+            column, line = xy[0] / settings.BLOCK, xy[1] / settings.BLOCK
+            self.grid[int(line)][int(column)] = 1
+            self.locked[xy] = block
+        self.launch_piece()
+
     def reset(self):
         self.sprites.empty()
+        self.grid = [[0 for _ in range(10)] for _ in range(20)]
+        self.locked = {}
         self.next = self.new_piece()
         self.launch_piece()
         self.running = True
