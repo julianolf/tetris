@@ -38,9 +38,20 @@ class Game:
             block.add((self.sprites,))
             xy = tuple(block.position)
             column, line = xy[0] / settings.BLOCK, xy[1] / settings.BLOCK
-            self.grid[int(line)][int(column)] = 1
+            self.grid[int(line)][int(column)] = xy
             self.locked[xy] = block
+        self.check_lines()
         self.launch_piece()
+
+    def check_lines(self):
+        removed = 0
+        for i, line in enumerate(self.grid):
+            if all(line):
+                for j, pos in enumerate(line):
+                    self.locked[pos].kill()
+                    self.locked.pop(pos)
+                    self.grid[i][j] = 0
+                removed += 1
 
     def reset(self):
         self.sprites.empty()
