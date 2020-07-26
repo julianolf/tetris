@@ -52,6 +52,10 @@ class Piece(pygame.sprite.Sprite):
     def blocks(self):
         return tuple(Block(self.color, p) for p in self.positions)
 
+    def move(self, xy):
+        self.x, self.y = xy
+        self.rect.topleft = xy
+
     def left(self):
         if self.rect.left > 0:
             self.x -= settings.BLOCK
@@ -59,7 +63,7 @@ class Piece(pygame.sprite.Sprite):
                 self.x += settings.BLOCK
 
     def right(self):
-        if self.rect.right < settings.WIDTH:
+        if self.rect.right < settings.AREA:
             self.x += settings.BLOCK
             if self.hit():
                 self.x -= settings.BLOCK
@@ -97,8 +101,8 @@ class Piece(pygame.sprite.Sprite):
             self.y += settings.BLOCK
         if self.rect.left < 0:
             self.x = 0
-        if self.rect.right > settings.WIDTH:
-            self.x = settings.WIDTH - self.rect.width
+        if self.rect.right > settings.AREA:
+            self.x = settings.AREA - self.rect.width
         if self.rect.bottom > settings.HEIGHT:
             self.y = settings.HEIGHT - self.rect.height
         if self.hit():

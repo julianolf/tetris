@@ -24,12 +24,13 @@ class Game:
 
     def new_piece(self):
         piece = random.choice(self.pieces)
-        x = settings.BLOCK * 4
-        y = settings.BLOCK * -2
+        x = settings.BLOCK * 11
+        y = settings.BLOCK * 10
         return piece((x, y), self, (self.sprites,))
 
     def launch_piece(self):
         self.current = self.next
+        self.current.move((settings.BLOCK * 4, settings.BLOCK * -2))
         self.current.falling = True
         self.next = self.new_piece()
 
@@ -85,6 +86,7 @@ class Game:
     def draw(self):
         self.screen.fill(settings.BLACK)
         self.sprites.draw(self.screen)
+        pygame.draw.lines(self.screen, settings.WHITE, True, settings.BORDER)
         pygame.display.flip()
 
     def events(self):
