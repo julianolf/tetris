@@ -26,19 +26,19 @@ class Game:
         piece = random.choice(self.pieces)
         x = settings.BLOCK * 4
         y = settings.BLOCK * -2
-        return piece(pygame.Vector2(x, y), self, (self.sprites,))
+        return piece((x, y), self, (self.sprites,))
 
     def launch_piece(self):
         self.current = self.next
-        self.current.gravity = settings.BLOCK
+        self.current.falling = True
         self.next = self.new_piece()
 
     def stack(self):
         for block in self.current.blocks:
             block.add((self.sprites,))
-            xy = tuple(block.position)
-            column, line = xy[0] / settings.BLOCK, xy[1] / settings.BLOCK
-            self.grid[int(line)][int(column)] = xy
+            xy = (block.x, block.y)
+            column, line = xy[0] // settings.BLOCK, xy[1] // settings.BLOCK
+            self.grid[line][column] = xy
             self.locked[xy] = block
         self.check_lines()
         self.launch_piece()
@@ -47,16 +47,34 @@ class Game:
         removed = 0
         for i, line in enumerate(self.grid):
             if all(line):
-                for j, pos in enumerate(line):
-                    self.locked[pos].kill()
-                    self.locked.pop(pos)
+                for j, xy in enumerate(line):
+                    self.locked[xy].kill()
+                    self.locked.pop(xy)
                     self.grid[i][j] = 0
                 removed += 1
+                for k in range(i - 1, -1, -1):
+                    if any(self.grid[k]):
+                        for l in range(10):
+                            if self.grid[k][l]:
+                                pos = self.grid[k][l]
+                                self.grid[k][l] = 0
+                                block = self.locked.pop(pos)
+                                block.y += settings.BLOCK
+                                xy = (block.x, block.y)
+                                column = xy[0] // settings.BLOCK
+                                line = xy[1] // settings.BLOCK
+                                self.grid[line][column] = xy
+                                self.locked[xy] = block
+        if removed:
+            self.lines += removed
+            self.score += (10 * removed) * removed
 
     def reset(self):
         self.sprites.empty()
         self.grid = [[0 for _ in range(10)] for _ in range(20)]
         self.locked = {}
+        self.lines = 0
+        self.score = 0
         self.next = self.new_piece()
         self.launch_piece()
         self.running = True

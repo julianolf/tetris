@@ -4,7 +4,7 @@ from . import settings
 
 
 class Block(pygame.sprite.Sprite):
-    def __init__(self, color, position, *args, **kwargs):
+    def __init__(self, color, xy, *args, **kwargs):
         super().__init__(*args, **kwargs)
         w, h = (settings.BLOCK, settings.BLOCK)
         image = pygame.Surface((w, h))
@@ -13,21 +13,24 @@ class Block(pygame.sprite.Sprite):
         pygame.draw.rect(image, color, pygame.Rect((1, 1), (w - 2, h - 2)))
         self.image = image.convert()
         self.rect = self.image.get_rect()
-        self.rect.topleft = (position.x, position.y)
+        self.rect.topleft = xy
         self.color = color
-        self.position = position
+        self.x, self.y = xy
+
+    def update(self):
+        self.rect.topleft = (self.x, self.y)
 
 
 class Piece(pygame.sprite.Sprite):
-    def __init__(self, shapes, color, position, game, *args, **kwargs):
+    def __init__(self, shapes, color, xy, game, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.shapes = shapes
         self.color = color
-        self.position = position
+        self.x, self.y = xy
         self.game = game
         self.rotation = 0
         self.last_move = 0
-        self.gravity = 0
+        self.falling = False
         self.draw()
 
     @property
@@ -36,12 +39,13 @@ class Piece(pygame.sprite.Sprite):
 
     @property
     def positions(self):
-        for x in range(len(self.shape[0])):
-            for y in range(len(self.shape)):
-                if self.shape[y][x]:
-                    yield pygame.Vector2(
-                        x * settings.BLOCK + self.position.x,
-                        y * settings.BLOCK + self.position.y,
+        shape = self.shape
+        for x in range(len(shape[0])):
+            for y in range(len(shape)):
+                if shape[y][x]:
+                    yield (
+                        x * settings.BLOCK + self.x,
+                        y * settings.BLOCK + self.y,
                     )
 
     @property
@@ -50,26 +54,28 @@ class Piece(pygame.sprite.Sprite):
 
     def left(self):
         if self.rect.left > 0:
-            self.position.x -= settings.BLOCK
+            self.x -= settings.BLOCK
             if self.hit():
-                self.position.x += settings.BLOCK
+                self.x += settings.BLOCK
 
     def right(self):
         if self.rect.right < settings.WIDTH:
-            self.position.x += settings.BLOCK
+            self.x += settings.BLOCK
             if self.hit():
-                self.position.x -= settings.BLOCK
+                self.x -= settings.BLOCK
 
     def down(self):
         if self.rect.bottom < settings.HEIGHT:
-            self.position.y += settings.BLOCK
+            self.y += settings.BLOCK
             if self.hit():
-                self.position.y -= settings.BLOCK
+                self.y -= settings.BLOCK
 
     def rotate(self):
         self.rotation += 1
         if self.hit():
             self.rotation -= 1
+        else:
+            self.draw()
 
     def hit(self):
         return any(tuple(p) in self.game.locked for p in self.positions)
@@ -79,99 +85,99 @@ class Piece(pygame.sprite.Sprite):
         self.kill()
 
     def update(self):
-        if not self.gravity:
+        if not self.falling:
             return
         now = pygame.time.get_ticks()
         elapsed_time = now - self.last_move
         if elapsed_time > 1500:
             self.last_move = now
-            if self.rect.bottom == settings.HEIGHT and self.gravity:
+            if self.rect.bottom == settings.HEIGHT and self.falling:
                 self.lock()
                 return
-            self.position.y += self.gravity
+            self.y += settings.BLOCK
         if self.rect.left < 0:
-            self.position.x = 0
+            self.x = 0
         if self.rect.right > settings.WIDTH:
-            self.position.x = settings.WIDTH - self.rect.width
+            self.x = settings.WIDTH - self.rect.width
         if self.rect.bottom > settings.HEIGHT:
-            self.position.y = settings.HEIGHT - self.rect.height
+            self.y = settings.HEIGHT - self.rect.height
         if self.hit():
-            self.position.y -= self.gravity
-            self.game.stack()
-            self.kill()
-        self.draw()
+            self.y -= settings.BLOCK
+            self.lock()
+        self.rect.topleft = (self.x, self.y)
 
     def draw(self):
-        rows = len(self.shape)
-        cols = len(self.shape[0])
+        shape = self.shape
+        rows = len(shape)
+        cols = len(shape[0])
         size = (cols * settings.BLOCK, rows * settings.BLOCK)
         image = pygame.Surface(size)
         image.fill(settings.BLACK)
         image.set_colorkey(settings.BLACK)
         for x in range(rows):
             for y in range(cols):
-                if self.shape[x][y]:
+                if shape[x][y]:
                     coord = (y * settings.BLOCK + 1, x * settings.BLOCK + 1)
                     block = (settings.BLOCK - 2, settings.BLOCK - 2)
                     rect = pygame.Rect(coord, block)
                     pygame.draw.rect(image, self.color, rect)
         self.image = image.convert()
         self.rect = self.image.get_rect()
-        self.rect.topleft = self.position
+        self.rect.topleft = (self.x, self.y)
 
 
 class S_(Piece):
-    def __init__(self, position, *args, **kwargs):
+    def __init__(self, xy, *args, **kwargs):
         shapes = (((0, 1, 1), (1, 1, 0)), ((1, 0), (1, 1), (0, 1)))
-        super().__init__(shapes, settings.GREEN, position, *args, **kwargs)
+        super().__init__(shapes, settings.GREEN, xy, *args, **kwargs)
 
 
 class Z_(Piece):
-    def __init__(self, position, *args, **kwargs):
+    def __init__(self, xy, *args, **kwargs):
         shapes = (((1, 1, 0), (0, 1, 1)), ((0, 1), (1, 1), (1, 0)))
-        super().__init__(shapes, settings.RED, position, *args, **kwargs)
+        super().__init__(shapes, settings.RED, xy, *args, **kwargs)
 
 
 class I_(Piece):
-    def __init__(self, position, *args, **kwargs):
+    def __init__(self, xy, *args, **kwargs):
         shapes = (((1, 1, 1, 1),), ((1,), (1,), (1,), (1,)))
-        super().__init__(shapes, settings.CYAN, position, *args, **kwargs)
+        super().__init__(shapes, settings.CYAN, xy, *args, **kwargs)
 
 
 class O_(Piece):
-    def __init__(self, position, *args, **kwargs):
+    def __init__(self, xy, *args, **kwargs):
         shapes = (((1, 1), (1, 1)),)
-        super().__init__(shapes, settings.YELLOW, position, *args, **kwargs)
+        super().__init__(shapes, settings.YELLOW, xy, *args, **kwargs)
 
 
 class J_(Piece):
-    def __init__(self, position, *args, **kwargs):
+    def __init__(self, xy, *args, **kwargs):
         shapes = (
             ((1, 0, 0), (1, 1, 1)),
             ((1, 1), (1, 0), (1, 0)),
             ((1, 1, 1), (0, 0, 1)),
             ((0, 1), (0, 1), (1, 1)),
         )
-        super().__init__(shapes, settings.BLUE, position, *args, **kwargs)
+        super().__init__(shapes, settings.BLUE, xy, *args, **kwargs)
 
 
 class L_(Piece):
-    def __init__(self, position, *args, **kwargs):
+    def __init__(self, xy, *args, **kwargs):
         shapes = (
             ((0, 0, 1), (1, 1, 1)),
             ((1, 0), (1, 0), (1, 1)),
             ((1, 1, 1), (1, 0, 0)),
             ((1, 1), (0, 1), (0, 1)),
         )
-        super().__init__(shapes, settings.ORANGE, position, *args, **kwargs)
+        super().__init__(shapes, settings.ORANGE, xy, *args, **kwargs)
 
 
 class T_(Piece):
-    def __init__(self, position, *args, **kwargs):
+    def __init__(self, xy, *args, **kwargs):
         shapes = (
             ((0, 1, 0), (1, 1, 1)),
             ((1, 0), (1, 1), (1, 0)),
             ((1, 1, 1), (0, 1, 0)),
             ((0, 1), (1, 1), (0, 1)),
         )
-        super().__init__(shapes, settings.PURPLE, position, *args, **kwargs)
+        super().__init__(shapes, settings.PURPLE, xy, *args, **kwargs)
