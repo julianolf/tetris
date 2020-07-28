@@ -76,6 +76,8 @@ class Game:
         y = settings.BLOCK
         self.text('Score', (x, y))
         self.text(f'{self.score:0>6}', (x, y * 2))
+        self.text('Lines', (x, y * 4))
+        self.text(f'{self.lines}', (x, y * 5))
 
     def reset(self):
         self.sprites.empty()
