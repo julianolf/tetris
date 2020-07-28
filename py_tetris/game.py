@@ -70,6 +70,8 @@ class Game:
         if removed:
             self.lines += removed
             self.score += (10 * removed) * removed
+            if self.score % 500 == 0:
+                self.level += 1
 
     def info(self):
         x = settings.INFO
@@ -78,6 +80,8 @@ class Game:
         self.text(f'{self.score:0>6}', (x, y * 2))
         self.text('Lines', (x, y * 4))
         self.text(f'{self.lines}', (x, y * 5))
+        self.text('Level', (x, y * 7))
+        self.text(f'{self.level}', (x, y * 8))
 
     def reset(self):
         self.sprites.empty()
@@ -85,6 +89,7 @@ class Game:
         self.locked = {}
         self.lines = 0
         self.score = 0
+        self.level = 1
         self.next = self.new_piece()
         self.launch_piece()
         self.running = True
