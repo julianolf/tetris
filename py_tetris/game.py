@@ -26,7 +26,7 @@ class Game:
     def new_piece(self):
         piece = random.choice(self.pieces)
         x = settings.INFO
-        y = settings.BLOCK * 10
+        y = settings.BLOCK * 3
         return piece((x, y), self, (self.sprites,))
 
     def launch_piece(self):
@@ -76,12 +76,13 @@ class Game:
     def info(self):
         x = settings.INFO
         y = settings.BLOCK
-        self.text('Score', (x, y))
-        self.text(f'{self.score:0>6}', (x, y * 2))
-        self.text('Lines', (x, y * 4))
-        self.text(f'{self.lines}', (x, y * 5))
-        self.text('Level', (x, y * 7))
-        self.text(f'{self.level}', (x, y * 8))
+        self.text('Next', (x, y))
+        self.text('Score', (x, y * 6))
+        self.text(f'{self.score:0>6}', (x, y * 7))
+        self.text('Lines', (x, y * 9))
+        self.text(f'{self.lines}', (x, y * 10))
+        self.text('Level', (x, y * 12))
+        self.text(f'{self.level}', (x, y * 13))
 
     def reset(self):
         self.sprites.empty()
