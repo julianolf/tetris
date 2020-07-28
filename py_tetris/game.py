@@ -12,6 +12,7 @@ class Game:
         self.screen = pygame.display.set_mode(settings.WIN_SIZE)
         self.clock = pygame.time.Clock()
         self.sprites = pygame.sprite.Group()
+        self.font = pygame.font.Font(settings.FONT, 40)
         self.pieces = (
             sprites.S_,
             sprites.Z_,
@@ -24,7 +25,7 @@ class Game:
 
     def new_piece(self):
         piece = random.choice(self.pieces)
-        x = settings.BLOCK * 11
+        x = settings.INFO
         y = settings.BLOCK * 10
         return piece((x, y), self, (self.sprites,))
 
@@ -70,6 +71,12 @@ class Game:
             self.lines += removed
             self.score += (10 * removed) * removed
 
+    def info(self):
+        x = settings.INFO
+        y = settings.BLOCK
+        self.text('Score', (x, y))
+        self.text(f'{self.score:0>6}', (x, y * 2))
+
     def reset(self):
         self.sprites.empty()
         self.grid = [[0 for _ in range(10)] for _ in range(20)]
@@ -86,8 +93,15 @@ class Game:
     def draw(self):
         self.screen.fill(settings.BLACK)
         self.sprites.draw(self.screen)
+        self.info()
         pygame.draw.lines(self.screen, settings.WHITE, True, settings.BORDER)
         pygame.display.flip()
+
+    def text(self, txt, xy):
+        surface = self.font.render(txt, True, settings.WHITE)
+        surface_rect = surface.get_rect()
+        surface_rect.topleft = xy
+        self.screen.blit(surface, surface_rect)
 
     def events(self):
         for event in pygame.event.get():
