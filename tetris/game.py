@@ -1,4 +1,5 @@
 import random
+from os import path
 
 import pygame
 
@@ -8,6 +9,7 @@ from . import settings, sprites
 class Game:
     def __init__(self):
         pygame.init()
+        pygame.mixer.init()
         pygame.display.set_caption(settings.TITLE)
         self.screen = pygame.display.set_mode(settings.WIN_SIZE)
         self.clock = pygame.time.Clock()
@@ -22,6 +24,10 @@ class Game:
             sprites.L_,
             sprites.T_,
         )
+        self.sfx = {
+            sound: pygame.mixer.Sound(path.join(settings.SFX, f'{sound}.wav'))
+            for sound in ('explode', 'freeze', 'rotate')
+        }
 
     def new_piece(self):
         piece = random.choice(self.pieces)
@@ -42,6 +48,7 @@ class Game:
             column, line = xy[0] // settings.BLOCK, xy[1] // settings.BLOCK
             self.grid[line][column] = xy
             self.locked[xy] = block
+        self.sfx['freeze'].play()
         self.check_lines()
         self.launch_piece()
 
@@ -71,6 +78,7 @@ class Game:
             self.lines += removed
             self.score += (10 * removed) * removed
             self.level_up()
+            self.sfx['explode'].play()
 
     def level_up(self):
         next_level = 1 + (self.score // 500)
