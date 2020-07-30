@@ -1,4 +1,4 @@
-PyTETRIS
+TETRIS
 ========
 
 Yet another Tetris game written in Python.
@@ -13,14 +13,14 @@ Installing
 
 Use ``pip`` to download and install the game. ::
 
-    $ pip install py-tetris
+    $ pip install tetris
 
 Running
 -------
 
-Just type ``pytetris`` to run the game. ::
+Just type ``tetris`` to run the game. ::
 
-    $ pytetris
+    $ tetris
 
 Controls
 --------

@@ -1,6 +1,6 @@
 from os import path
 
-TITLE = 'PyTETRIS'
+TITLE = 'TETRIS'
 BLOCK = 30
 WIDTH = BLOCK * 16
 AREA = BLOCK * 10
