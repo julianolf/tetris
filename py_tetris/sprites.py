@@ -93,7 +93,7 @@ class Piece(pygame.sprite.Sprite):
             return
         now = pygame.time.get_ticks()
         elapsed_time = now - self.last_move
-        if elapsed_time > 1500:
+        if elapsed_time > self.game.speed:
             self.last_move = now
             if self.rect.bottom == settings.HEIGHT and self.falling:
                 self.lock()

@@ -76,6 +76,7 @@ class Game:
         next_level = 1 + (self.score // 500)
         if self.level < next_level:
             self.level = next_level
+            self.speed //= 2
 
     def info(self):
         x = settings.INFO
@@ -95,6 +96,7 @@ class Game:
         self.lines = 0
         self.score = 0
         self.level = 1
+        self.speed = 1000
         self.next = self.new_piece()
         self.launch_piece()
         self.running = True
