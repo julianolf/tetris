@@ -70,8 +70,12 @@ class Game:
         if removed:
             self.lines += removed
             self.score += (10 * removed) * removed
-            if self.score % 500 == 0:
-                self.level += 1
+            self.level_up()
+
+    def level_up(self):
+        next_level = 1 + (self.score // 500)
+        if self.level < next_level:
+            self.level = next_level
 
     def info(self):
         x = settings.INFO
