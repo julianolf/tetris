@@ -43,12 +43,17 @@ class Game:
 
     def stack(self):
         for block in self.current.blocks:
-            block.add((self.sprites,))
+            if block.y < 0:
+                continue
             xy = (block.x, block.y)
             column, line = xy[0] // settings.BLOCK, xy[1] // settings.BLOCK
             self.grid[line][column] = xy
             self.locked[xy] = block
+            block.add((self.sprites,))
         self.sfx['freeze'].play()
+        if self.current.rect.top < 0:
+            self.game_over()
+            return
         self.check_lines()
         self.launch_piece()
 
@@ -85,6 +90,9 @@ class Game:
         if self.level < next_level:
             self.level = next_level
             self.speed //= 2
+
+    def game_over(self):
+        self.running = False
 
     def info(self):
         x = settings.INFO
