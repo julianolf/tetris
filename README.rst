@@ -3,6 +3,10 @@ TETRIS
 
 Yet another Tetris game written in Python.
 
+.. image:: https://raw.githubusercontent.com/julianolf/tetris/master/screenshot.png
+    :width: 640px
+    :alt: game play screenshot
+
 Requirements
 ------------
 
@@ -13,7 +17,7 @@ Installing
 
 Use ``pip`` to download and install the game. ::
 
-    $ pip install tetris
+    $ pip install git+https://github.com/julianolf/tetris.git
 
 Running
 -------
