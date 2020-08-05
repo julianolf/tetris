@@ -92,7 +92,8 @@ class Game:
             self.speed //= 2
 
     def game_over(self):
-        self.running = False
+        self.sprites.empty()
+        self.splash_screen = sprites.SplashScreen('GAME OVER', (self.sprites,))
 
     def info(self):
         x = settings.INFO
@@ -114,8 +115,14 @@ class Game:
         self.level = 1
         self.speed = 1000
         self.next = self.new_piece()
+        self.splash_screen = None
         self.launch_piece()
-        self.running = True
+
+    def start(self):
+        self.sprites.empty()
+        self.splash_screen = sprites.SplashScreen(
+            settings.TITLE, (self.sprites,)
+        )
 
     def update(self):
         self.sprites.update()
@@ -123,8 +130,11 @@ class Game:
     def draw(self):
         self.screen.fill(settings.BLACK)
         self.sprites.draw(self.screen)
-        self.info()
-        pygame.draw.lines(self.screen, settings.WHITE, True, settings.BORDER)
+        if not self.splash_screen:
+            self.info()
+            pygame.draw.lines(
+                self.screen, settings.WHITE, True, settings.BORDER
+            )
         pygame.display.flip()
 
     def text(self, txt, xy):
@@ -139,6 +149,9 @@ class Game:
                 self.running = False
                 return
             if event.type == pygame.KEYDOWN:
+                if self.splash_screen:
+                    self.reset()
+                    return
                 if event.key == pygame.K_LEFT:
                     self.current.left()
                     return
@@ -159,7 +172,8 @@ class Game:
             self.events()
 
     def run(self):
-        self.reset()
+        self.running = True
+        self.start()
         self.loop()
         pygame.quit()
 
