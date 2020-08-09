@@ -167,6 +167,7 @@ class Game:
 
     def loop(self):
         while self.running:
+            self.clock.tick(settings.FPS)
             self.update()
             self.draw()
             self.events()

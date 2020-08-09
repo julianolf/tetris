@@ -1,6 +1,7 @@
 from os import path
 
 TITLE = 'TETRIS'
+FPS = 30
 BLOCK = 30
 WIDTH = BLOCK * 16
 AREA = BLOCK * 10
