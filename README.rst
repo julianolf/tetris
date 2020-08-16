@@ -30,3 +30,8 @@ Controls
 --------
 
 Use the arrow keys to control the pieces.
+
+Credits
+-------
+
+* Tetriminos image sprites taken from `here <https://crossstitchquest.net/2020/03/12/free-cat-tetris-cross-stitch-pattern/>`_.

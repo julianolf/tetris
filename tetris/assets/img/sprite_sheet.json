@@ -1,0 +1,112 @@
+{
+  "frames": [
+    {
+      "filename": "sqr01.png",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 30,
+        "h": 30
+      }
+    },
+    {
+      "filename": "sqr02.png",
+      "frame": {
+        "x": 30,
+        "y": 0,
+        "w": 30,
+        "h": 30
+      }
+    },
+    {
+      "filename": "sqr03.png",
+      "frame": {
+        "x": 60,
+        "y": 0,
+        "w": 30,
+        "h": 30
+      }
+    },
+    {
+      "filename": "sqr04.png",
+      "frame": {
+        "x": 90,
+        "y": 0,
+        "w": 30,
+        "h": 30
+      }
+    },
+    {
+      "filename": "sqr05.png",
+      "frame": {
+        "x": 120,
+        "y": 0,
+        "w": 30,
+        "h": 30
+      }
+    },
+    {
+      "filename": "sqr06.png",
+      "frame": {
+        "x": 150,
+        "y": 0,
+        "w": 30,
+        "h": 30
+      }
+    },
+    {
+      "filename": "sqr07.png",
+      "frame": {
+        "x": 180,
+        "y": 0,
+        "w": 30,
+        "h": 30
+      }
+    },
+    {
+      "filename": "sqr08.png",
+      "frame": {
+        "x": 210,
+        "y": 0,
+        "w": 30,
+        "h": 30
+      }
+    },
+    {
+      "filename": "sqr09.png",
+      "frame": {
+        "x": 240,
+        "y": 0,
+        "w": 30,
+        "h": 30
+      }
+    },
+    {
+      "filename": "sqr14.png",
+      "frame": {
+        "x": 270,
+        "y": 0,
+        "w": 30,
+        "h": 30
+      }
+    },
+    {
+      "filename": "sqr15.png",
+      "frame": {
+        "x": 300,
+        "y": 0,
+        "w": 30,
+        "h": 30
+      }
+    },
+    {
+      "filename": "sqr16.png",
+      "frame": {
+        "x": 330,
+        "y": 0,
+        "w": 30,
+        "h": 30
+      }
+    }
+  ]
+}

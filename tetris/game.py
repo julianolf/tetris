@@ -1,3 +1,4 @@
+import json
 import random
 from os import path
 
@@ -28,6 +29,19 @@ class Game:
             sound: pygame.mixer.Sound(path.join(settings.SFX, f"{sound}.wav"))
             for sound in ("explode", "freeze", "rotate")
         }
+        self.sprite_sheet = pygame.image.load(settings.SPRITE_SHEET).convert()
+        self.sprite_sheet_info = json.load(open(settings.SPRITE_SHEET_INFO))
+
+    def get_image(self, file_name):
+        for item in self.sprite_sheet_info["frames"]:
+            if item["filename"] == file_name:
+                x, y = item["frame"]["x"], item["frame"]["y"]
+                width, height = item["frame"]["w"], item["frame"]["h"]
+                image = pygame.Surface((width, height))
+                image.blit(self.sprite_sheet, (0, 0), (x, y, width, height))
+                image.convert()
+                image.set_colorkey(settings.BLACK)
+                return image
 
     def new_piece(self):
         piece = random.choice(self.pieces)

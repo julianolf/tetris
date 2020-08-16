@@ -4,17 +4,11 @@ from . import settings
 
 
 class Block(pygame.sprite.Sprite):
-    def __init__(self, color, xy, *args, **kwargs):
+    def __init__(self, image, xy, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        w, h = (settings.BLOCK, settings.BLOCK)
-        image = pygame.Surface((w, h))
-        image.fill(settings.BLACK)
-        image.set_colorkey(settings.BLACK)
-        pygame.draw.rect(image, color, pygame.Rect((1, 1), (w - 2, h - 2)))
-        self.image = image.convert()
+        self.image = image
         self.rect = self.image.get_rect()
         self.rect.topleft = xy
-        self.color = color
         self.x, self.y = xy
 
     def update(self):
@@ -22,10 +16,8 @@ class Block(pygame.sprite.Sprite):
 
 
 class Piece(pygame.sprite.Sprite):
-    def __init__(self, shapes, color, xy, game, *args, **kwargs):
+    def __init__(self, xy, game, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.shapes = shapes
-        self.color = color
         self.x, self.y = xy
         self.game = game
         self.rotation = 0
@@ -50,7 +42,7 @@ class Piece(pygame.sprite.Sprite):
 
     @property
     def blocks(self):
-        return tuple(Block(self.color, p) for p in self.positions)
+        return tuple(Block(self.img, p) for p in self.positions)
 
     def move(self, xy):
         self.x, self.y = xy
@@ -122,70 +114,112 @@ class Piece(pygame.sprite.Sprite):
         for x in range(rows):
             for y in range(cols):
                 if shape[x][y]:
-                    coord = (y * settings.BLOCK + 1, x * settings.BLOCK + 1)
-                    block = (settings.BLOCK - 2, settings.BLOCK - 2)
-                    rect = pygame.Rect(coord, block)
-                    pygame.draw.rect(image, self.color, rect)
+                    coord = (y * settings.BLOCK, x * settings.BLOCK)
+                    image.blit(self.img, coord)
         self.image = image.convert()
         self.rect = self.image.get_rect()
         self.rect.topleft = (self.x, self.y)
 
 
 class S_(Piece):
-    def __init__(self, xy, *args, **kwargs):
-        shapes = (((0, 1, 1), (1, 1, 0)), ((1, 0), (1, 1), (0, 1)))
-        super().__init__(shapes, settings.GREEN, xy, *args, **kwargs)
+    def __init__(self, xy, game, *args, **kwargs):
+        self.shapes = (((0, 1, 1), (1, 1, 0)), ((1, 0), (1, 1), (0, 1)))
+        self.img = game.get_image("sqr03.png")
+        super().__init__(xy, game, *args, **kwargs)
 
 
 class Z_(Piece):
-    def __init__(self, xy, *args, **kwargs):
-        shapes = (((1, 1, 0), (0, 1, 1)), ((0, 1), (1, 1), (1, 0)))
-        super().__init__(shapes, settings.RED, xy, *args, **kwargs)
-
-
-class I_(Piece):
-    def __init__(self, xy, *args, **kwargs):
-        shapes = (((1, 1, 1, 1),), ((1,), (1,), (1,), (1,)))
-        super().__init__(shapes, settings.CYAN, xy, *args, **kwargs)
+    def __init__(self, xy, game, *args, **kwargs):
+        self.shapes = (((1, 1, 0), (0, 1, 1)), ((0, 1), (1, 1), (1, 0)))
+        self.img = game.get_image("sqr01.png")
+        super().__init__(xy, game, *args, **kwargs)
 
 
 class O_(Piece):
-    def __init__(self, xy, *args, **kwargs):
-        shapes = (((1, 1), (1, 1)),)
-        super().__init__(shapes, settings.YELLOW, xy, *args, **kwargs)
+    def __init__(self, xy, game, *args, **kwargs):
+        self.shapes = (((1, 1), (1, 1)),)
+        self.img = game.get_image("sqr07.png")
+        super().__init__(xy, game, *args, **kwargs)
 
 
 class J_(Piece):
-    def __init__(self, xy, *args, **kwargs):
-        shapes = (
+    def __init__(self, xy, game, *args, **kwargs):
+        self.shapes = (
             ((1, 0, 0), (1, 1, 1)),
             ((1, 1), (1, 0), (1, 0)),
             ((1, 1, 1), (0, 0, 1)),
             ((0, 1), (0, 1), (1, 1)),
         )
-        super().__init__(shapes, settings.BLUE, xy, *args, **kwargs)
+        self.img = game.get_image("sqr08.png")
+        super().__init__(xy, game, *args, **kwargs)
 
 
 class L_(Piece):
-    def __init__(self, xy, *args, **kwargs):
-        shapes = (
+    def __init__(self, xy, game, *args, **kwargs):
+        self.shapes = (
             ((0, 0, 1), (1, 1, 1)),
             ((1, 0), (1, 0), (1, 1)),
             ((1, 1, 1), (1, 0, 0)),
             ((1, 1), (0, 1), (0, 1)),
         )
-        super().__init__(shapes, settings.ORANGE, xy, *args, **kwargs)
+        self.img = game.get_image("sqr09.png")
+        super().__init__(xy, game, *args, **kwargs)
 
 
 class T_(Piece):
-    def __init__(self, xy, *args, **kwargs):
-        shapes = (
+    def __init__(self, xy, game, *args, **kwargs):
+        self.shapes = (
             ((0, 1, 0), (1, 1, 1)),
             ((1, 0), (1, 1), (1, 0)),
             ((1, 1, 1), (0, 1, 0)),
             ((0, 1), (1, 1), (0, 1)),
         )
-        super().__init__(shapes, settings.PURPLE, xy, *args, **kwargs)
+        self.img = game.get_image("sqr02.png")
+        super().__init__(xy, game, *args, **kwargs)
+
+
+class I_(Piece):
+    def __init__(self, xy, game, *args, **kwargs):
+        self.shapes = (((1, 1, 1, 1),), ((1,), (1,), (1,), (1,)))
+        self.img = [
+            game.get_image("sqr04.png"),
+            game.get_image("sqr05.png"),
+            game.get_image("sqr06.png"),
+            game.get_image("sqr14.png"),
+            game.get_image("sqr15.png"),
+            game.get_image("sqr16.png"),
+        ]
+        super().__init__(xy, game, *args, **kwargs)
+
+    @property
+    def blocks(self):
+        imgs = self.img[:3] if len(self.shape) == 1 else self.img[3:]
+        idx = (0, 1, 1, 2)
+        return tuple(
+            Block(imgs[idx[i]], p) for i, p in enumerate(self.positions)
+        )
+
+    def draw(self):
+        shape = self.shape
+        rows = len(shape)
+        cols = len(shape[0])
+        size = (cols * settings.BLOCK, rows * settings.BLOCK)
+        image = pygame.Surface(size)
+        image.fill(settings.BLACK)
+        image.set_colorkey(settings.BLACK)
+        imgs = self.img[:3] if rows == 1 else self.img[3:]
+        coords = [
+            (y * settings.BLOCK, x * settings.BLOCK)
+            for x in range(rows)
+            for y in range(cols)
+        ]
+        image.blit(imgs[0], coords[0])
+        image.blit(imgs[1], coords[1])
+        image.blit(imgs[1], coords[2])
+        image.blit(imgs[2], coords[3])
+        self.image = image.convert()
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (self.x, self.y)
 
 
 class SplashScreen(pygame.sprite.Sprite):
