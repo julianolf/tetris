@@ -25,8 +25,8 @@ class Game:
             sprites.T_,
         )
         self.sfx = {
-            sound: pygame.mixer.Sound(path.join(settings.SFX, f'{sound}.wav'))
-            for sound in ('explode', 'freeze', 'rotate')
+            sound: pygame.mixer.Sound(path.join(settings.SFX, f"{sound}.wav"))
+            for sound in ("explode", "freeze", "rotate")
         }
 
     def new_piece(self):
@@ -50,7 +50,7 @@ class Game:
             self.grid[line][column] = xy
             self.locked[xy] = block
             block.add((self.sprites,))
-        self.sfx['freeze'].play()
+        self.sfx["freeze"].play()
         if self.current.rect.top < 0:
             self.game_over()
             return
@@ -68,10 +68,10 @@ class Game:
                 removed += 1
                 for k in range(i - 1, -1, -1):
                     if any(self.grid[k]):
-                        for l in range(10):
-                            if self.grid[k][l]:
-                                pos = self.grid[k][l]
-                                self.grid[k][l] = 0
+                        for ln in range(10):
+                            if self.grid[k][ln]:
+                                pos = self.grid[k][ln]
+                                self.grid[k][ln] = 0
                                 block = self.locked.pop(pos)
                                 block.y += settings.BLOCK
                                 xy = (block.x, block.y)
@@ -83,7 +83,7 @@ class Game:
             self.lines += removed
             self.score += (10 * removed) * removed
             self.level_up()
-            self.sfx['explode'].play()
+            self.sfx["explode"].play()
 
     def level_up(self):
         next_level = 1 + (self.score // 500)
@@ -93,18 +93,18 @@ class Game:
 
     def game_over(self):
         self.sprites.empty()
-        self.splash_screen = sprites.SplashScreen('GAME OVER', (self.sprites,))
+        self.splash_screen = sprites.SplashScreen("GAME OVER", (self.sprites,))
 
     def info(self):
         x = settings.INFO
         y = settings.BLOCK
-        self.text('Next', (x, y))
-        self.text('Score', (x, y * 6))
-        self.text(f'{self.score:0>6}', (x, y * 7))
-        self.text('Lines', (x, y * 9))
-        self.text(f'{self.lines}', (x, y * 10))
-        self.text('Level', (x, y * 12))
-        self.text(f'{self.level}', (x, y * 13))
+        self.text("Next", (x, y))
+        self.text("Score", (x, y * 6))
+        self.text(f"{self.score:0>6}", (x, y * 7))
+        self.text("Lines", (x, y * 9))
+        self.text(f"{self.lines}", (x, y * 10))
+        self.text("Level", (x, y * 12))
+        self.text(f"{self.level}", (x, y * 13))
 
     def reset(self):
         self.sprites.empty()
@@ -154,16 +154,12 @@ class Game:
                     return
                 if event.key == pygame.K_LEFT:
                     self.current.left()
-                    return
                 if event.key == pygame.K_RIGHT:
                     self.current.right()
-                    return
                 if event.key == pygame.K_DOWN:
                     self.current.down()
-                    return
                 if event.key == pygame.K_UP:
                     self.current.rotate()
-                    return
 
     def loop(self):
         while self.running:
@@ -183,5 +179,5 @@ def main():
     Game().run()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

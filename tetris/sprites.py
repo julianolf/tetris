@@ -80,7 +80,7 @@ class Piece(pygame.sprite.Sprite):
             self.rotation -= 1
         else:
             self.draw()
-            self.game.sfx['rotate'].play()
+            self.game.sfx["rotate"].play()
 
     def hit(self):
         return any(tuple(p) in self.game.locked for p in self.positions)
