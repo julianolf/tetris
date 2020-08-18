@@ -174,6 +174,8 @@ class Game:
                     self.current.down()
                 if event.key == pygame.K_UP:
                     self.current.rotate()
+                if event.key == pygame.K_SPACE:
+                    self.current.drop()
 
     def loop(self):
         while self.running:

@@ -74,6 +74,13 @@ class Piece(pygame.sprite.Sprite):
             self.draw()
             self.game.sfx["rotate"].play()
 
+    def drop(self):
+        while self.y < settings.HEIGHT - settings.BLOCK:
+            self.y += settings.BLOCK
+            if self.hit():
+                self.y -= settings.BLOCK
+                break
+
     def hit(self):
         return any(tuple(p) in self.game.locked for p in self.positions)
 
