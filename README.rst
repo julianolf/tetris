@@ -1,7 +1,7 @@
 TETRIS
 ========
 
-Yet another Tetris game written in Python.
+Tetris game written in Python using Pygame.
 
 .. image:: https://raw.githubusercontent.com/julianolf/tetris/master/screenshot.png
     :width: 640px
@@ -29,9 +29,13 @@ Just type ``tetris`` to run the game. ::
 Controls
 --------
 
-Use the arrow keys to control the pieces.
+Use the arrow keys to control the pieces. ::
 
-Credits
--------
+        ← move left
+        → move right
+        ↑ rotate piece
+        ↓ down a little fast
 
-* Tetriminos image sprites taken from `here <https://crossstitchquest.net/2020/03/12/free-cat-tetris-cross-stitch-pattern/>`_.
+Other keys. ::
+
+        [space] drop piece
